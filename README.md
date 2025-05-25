@@ -3,7 +3,7 @@ SSTV Decoder
 
 ![](https://raw.githubusercontent.com/colaclanth/sstv/master/examples/m1.png)
 
-A command line slow-scan television decoder that works on audio files rather than reading a soundcard (like most other decoders).
+An almost blazingly fast command line slow-scan television decoder that works on audio files rather than reading a soundcard (like most other decoders).
 Currently supports the following modes:
 * Martin 1, 2
 * Scottie 1, 2, DX
@@ -22,7 +22,7 @@ $ ./install.sh
 
 Usage
 -----
-**The installation script tells you what to do, but anyways...**
+**The installation script tells you what to do, but I am sure you do will not read the instructions...**
 
 Usage actually depends on your environment: in case you don't have uv installed, you may run `.venv/bin/sstv` like this:
 ```
@@ -37,6 +37,9 @@ In case you DO have uv, you may just run
 ```
 $ uv run sstv -d audio_file.wav -o result.png
 ```
+
+Troubleshooting
+---------------
 If your autocompletions stopped working with `uv run`, you can activate venv and run the script directly with the completions :)
 
 Resources Used
