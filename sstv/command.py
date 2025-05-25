@@ -53,27 +53,51 @@ examples:
         parser = argparse.ArgumentParser(
             prog="sstv",
             formatter_class=argparse.RawDescriptionHelpFormatter,
-            epilog=self.examples_of_use)
+            epilog=self.examples_of_use,
+        )
 
-        parser.add_argument("-d", "--decode", type=argparse.FileType('rb'),
-                            help="decode SSTV audio file", dest="audio_file")
-        parser.add_argument("-o", "--output", type=str,
-                            help="save output image to custom location",
-                            default="result.png", dest="output_file")
-        parser.add_argument("-s", "--skip", type=float,
-                            help="time in seconds to start decoding signal at",
-                            default=0.0, dest="skip")
-        parser.add_argument("-V", "--version", action="version",
-                            version=version)
-        parser.add_argument("--list-modes", action="store_true",
-                            dest="list_modes",
-                            help="list supported SSTV modes")
-        parser.add_argument("--list-audio-formats", action="store_true",
-                            dest="list_audio_formats",
-                            help="list supported audio file formats")
-        parser.add_argument("--list-image-formats", action="store_true",
-                            dest="list_image_formats",
-                            help="list supported image file formats")
+        parser.add_argument(
+            "-d",
+            "--decode",
+            type=argparse.FileType("rb"),
+            help="decode SSTV audio file",
+            dest="audio_file",
+        )
+        parser.add_argument(
+            "-o",
+            "--output",
+            type=str,
+            help="save output image to custom location",
+            default="result.png",
+            dest="output_file",
+        )
+        parser.add_argument(
+            "-s",
+            "--skip",
+            type=float,
+            help="time in seconds to start decoding signal at",
+            default=0.0,
+            dest="skip",
+        )
+        parser.add_argument("-V", "--version", action="version", version=version)
+        parser.add_argument(
+            "--list-modes",
+            action="store_true",
+            dest="list_modes",
+            help="list supported SSTV modes",
+        )
+        parser.add_argument(
+            "--list-audio-formats",
+            action="store_true",
+            dest="list_audio_formats",
+            help="list supported audio file formats",
+        )
+        parser.add_argument(
+            "--list-image-formats",
+            action="store_true",
+            dest="list_image_formats",
+            help="list supported image file formats",
+        )
         return parser
 
     def parse_args(self, shell_args):
@@ -113,8 +137,7 @@ examples:
             try:
                 img.save(self._output_file)
             except (KeyError, ValueError):
-                log_message("Error saving file, saved to result.png instead",
-                            err=True)
+                log_message("Error saving file, saved to result.png instead", err=True)
                 img.save("result.png")
 
     def close(self):
@@ -124,14 +147,14 @@ examples:
             self._audio_file.close()
 
     def list_supported_modes(self):
-        modes = ', '.join([fmt.NAME for fmt in VIS_MAP.values()])
+        modes = ", ".join([fmt.NAME for fmt in VIS_MAP.values()])
         print("Supported modes: {}".format(modes))
 
     def list_supported_audio_formats(self):
-        audio_formats = ', '.join(available_audio_formats().keys())
+        audio_formats = ", ".join(available_audio_formats().keys())
         print("Supported audio formats: {}".format(audio_formats))
 
     def list_supported_image_formats(self):
         Image.init()
-        image_formats = ', '.join(Image.SAVE.keys())
+        image_formats = ", ".join(Image.SAVE.keys())
         print("Supported image formats: {}".format(image_formats))

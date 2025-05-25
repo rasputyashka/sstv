@@ -30,23 +30,35 @@ class SSTVDecoderTestCase(unittest.TestCase):
 
     def test_decoder_init(self):
         """Test SSTVDecoder init"""
-        with open("./test/data/m1.ogg", 'rb') as fp:
+        with open("./test/data/m1.ogg", "rb") as fp:
             with SSTVDecoder(fp) as decoder:
                 self.assertEqual(decoder._audio_file, fp)
                 self.assertEqual(decoder._sample_rate, 44100)
 
     def test_decoder_freq_detect(self):
         """Test the peak frequency detection function"""
-        with open("./test/data/220hz_sine.ogg", 'rb') as fp:
+        with open("./test/data/220hz_sine.ogg", "rb") as fp:
             with SSTVDecoder(fp) as decoder:
                 # Test using all samples in sound file
                 freq = round(decoder._peak_fft_freq(decoder._samples))
-                self.assertEqual(freq, 220, "Incorrect frequency determined by peak detector using all samples")
+                self.assertEqual(
+                    freq,
+                    220,
+                    "Incorrect frequency determined by peak detector using all samples",
+                )
 
                 # Test using 1/4 of a second of samples
                 freq = round(decoder._peak_fft_freq(decoder._samples[:11025]))
-                self.assertEqual(freq, 220, "Incorrect frequency determined by peak detector using 1/4 second samples")
+                self.assertEqual(
+                    freq,
+                    220,
+                    "Incorrect frequency determined by peak detector using 1/4 second samples",
+                )
 
                 # Test using 2000 samples
                 freq = round(decoder._peak_fft_freq(decoder._samples[:1000]))
-                self.assertEqual(freq, 220, "Incorrect frequency determined by peak detector using 1000 samples")
+                self.assertEqual(
+                    freq,
+                    220,
+                    "Incorrect frequency determined by peak detector using 1000 samples",
+                )

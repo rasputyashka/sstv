@@ -183,13 +183,7 @@ class R72(R36):
     HAS_ALT_SCAN = False
 
 
-VIS_MAP = {8: R36,
-           12: R72,
-           40: M2,
-           44: M1,
-           56: S2,
-           60: S1,
-           76: SDX}
+VIS_MAP = {8: R36, 12: R72, 40: M2, 44: M1, 56: S2, 60: S1, 76: SDX}
 
 BREAK_OFFSET = 0.300
 LEADER_OFFSET = 0.010 + BREAK_OFFSET

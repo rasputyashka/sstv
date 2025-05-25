@@ -23,8 +23,8 @@ def barycentric_peak_interp(bins, x):
     # x value of the peak using neighbours in the bins array
 
     # Make sure data is in bounds
-    y1 = bins[x] if x <= 0 else bins[x-1]
-    y3 = bins[x] if x + 1 >= len(bins) else bins[x+1]
+    y1 = bins[x] if x <= 0 else bins[x - 1]
+    y3 = bins[x] if x + 1 >= len(bins) else bins[x + 1]
 
     denom = y3 + bins[x] + y1
     if denom == 0:
@@ -34,7 +34,6 @@ def barycentric_peak_interp(bins, x):
 
 
 class SSTVDecoder(object):
-
     """Create an SSTV decoder for decoding audio data"""
 
     def __init__(self, audio_file):
@@ -63,7 +62,7 @@ class SSTVDecoder(object):
         """
 
         if skip > 0.0:
-            self._samples = self._samples[round(skip * self._sample_rate):]
+            self._samples = self._samples[round(skip * self._sample_rate) :]
 
         header_end = self._find_header()
 
@@ -123,8 +122,7 @@ class SSTVDecoder(object):
         # vis due to each bit having a length of 30ms. We fix this error margin
         # when decoding the image by aligning each sync pulse
 
-        for current_sample in range(0, len(self._samples) - header_size,
-                                    jump_size):
+        for current_sample in range(0, len(self._samples) - header_size, jump_size):
             # Update search progress message
             if current_sample % (jump_size * 256) == 0:
                 search_msg = "Searching for calibration header... {:.1f}s"
@@ -140,18 +138,19 @@ class SSTVDecoder(object):
             vis_start_area = search_area[vis_start_sample:vis_start_search]
 
             # Check they're the correct frequencies
-            if (abs(self._peak_fft_freq(leader_1_area) - 1900) < 50
-               and abs(self._peak_fft_freq(break_area) - 1200) < 50
-               and abs(self._peak_fft_freq(leader_2_area) - 1900) < 50
-               and abs(self._peak_fft_freq(vis_start_area) - 1200) < 50):
+            if (
+                abs(self._peak_fft_freq(leader_1_area) - 1900) < 50
+                and abs(self._peak_fft_freq(break_area) - 1200) < 50
+                and abs(self._peak_fft_freq(leader_2_area) - 1900) < 50
+                and abs(self._peak_fft_freq(vis_start_area) - 1200) < 50
+            ):
 
                 stop_msg = "Searching for calibration header... Found!{:>4}"
-                log_message(stop_msg.format(' '))
+                log_message(stop_msg.format(" "))
                 return current_sample + header_size
 
         log_message()
-        log_message("Couldn't find SSTV header in the given audio file",
-                    err=True)
+        log_message("Couldn't find SSTV header in the given audio file", err=True)
         return None
 
     def _decode_vis(self, vis_start):
@@ -162,7 +161,7 @@ class SSTVDecoder(object):
 
         for bit_idx in range(8):
             bit_offset = vis_start + bit_idx * bit_size
-            section = self._samples[bit_offset:bit_offset+bit_size]
+            section = self._samples[bit_offset : bit_offset + bit_size]
             freq = self._peak_fft_freq(section)
             # 1100 hz = 1, 1300hz = 0
             vis_bits.append(int(freq <= 1200))
@@ -222,8 +221,9 @@ class SSTVDecoder(object):
         channels = self.mode.CHAN_COUNT
         width = self.mode.LINE_WIDTH
         # Use list comprehension to init list so we can return data early
-        image_data = [[[0 for i in range(width)]
-                       for j in range(channels)] for k in range(height)]
+        image_data = [
+            [[0 for i in range(width)] for j in range(channels)] for k in range(height)
+        ]
 
         seq_start = image_start
         if self.mode.HAS_START_SYNC:
@@ -237,16 +237,16 @@ class SSTVDecoder(object):
             if self.mode.CHAN_SYNC > 0 and line == 0:
                 # Align seq_start to the beginning of the previous sync pulse
                 sync_offset = self.mode.CHAN_OFFSETS[self.mode.CHAN_SYNC]
-                seq_start -= round((sync_offset + self.mode.SCAN_TIME)
-                                   * self._sample_rate)
+                seq_start -= round(
+                    (sync_offset + self.mode.SCAN_TIME) * self._sample_rate
+                )
 
             for chan in range(channels):
 
                 if chan == self.mode.CHAN_SYNC:
                     if line > 0 or chan > 0:
                         # Set base offset to the next line
-                        seq_start += round(self.mode.LINE_TIME *
-                                           self._sample_rate)
+                        seq_start += round(self.mode.LINE_TIME * self._sample_rate)
 
                     # Align to start of sync pulse
                     seq_start = self._align_sync(seq_start)
@@ -262,16 +262,17 @@ class SSTVDecoder(object):
                         pixel_time = self.mode.HALF_PIXEL_TIME
 
                     centre_window_time = (pixel_time * window_factor) / 2
-                    pixel_window = round(centre_window_time * 2 *
-                                         self._sample_rate)
+                    pixel_window = round(centre_window_time * 2 * self._sample_rate)
 
                 for px in range(width):
 
                     chan_offset = self.mode.CHAN_OFFSETS[chan]
 
-                    px_pos = round(seq_start + (chan_offset + px *
-                                   pixel_time - centre_window_time) *
-                                   self._sample_rate)
+                    px_pos = round(
+                        seq_start
+                        + (chan_offset + px * pixel_time - centre_window_time)
+                        * self._sample_rate
+                    )
                     px_end = px_pos + pixel_window
 
                     # If we are performing fft past audio length, stop early
@@ -317,26 +318,34 @@ class SSTVDecoder(object):
                     if self.mode.HAS_ALT_SCAN:
                         if self.mode.COLOR == spec.COL_FMT.YUV:
                             # R36
-                            pixel = (image_data[y][0][x],
-                                     image_data[y-(odd_line-1)][1][x],
-                                     image_data[y-odd_line][1][x])
+                            pixel = (
+                                image_data[y][0][x],
+                                image_data[y - (odd_line - 1)][1][x],
+                                image_data[y - odd_line][1][x],
+                            )
 
                 elif channels == 3:
 
                     if self.mode.COLOR == spec.COL_FMT.GBR:
                         # M1, M2, S1, S2, SDX
-                        pixel = (image_data[y][2][x],
-                                 image_data[y][0][x],
-                                 image_data[y][1][x])
+                        pixel = (
+                            image_data[y][2][x],
+                            image_data[y][0][x],
+                            image_data[y][1][x],
+                        )
                     elif self.mode.COLOR == spec.COL_FMT.YUV:
                         # R72
-                        pixel = (image_data[y][0][x],
-                                 image_data[y][2][x],
-                                 image_data[y][1][x])
+                        pixel = (
+                            image_data[y][0][x],
+                            image_data[y][2][x],
+                            image_data[y][1][x],
+                        )
                     elif self.mode.COLOR == spec.COL_FMT.RGB:
-                        pixel = (image_data[y][0][x],
-                                 image_data[y][1][x],
-                                 image_data[y][2][x])
+                        pixel = (
+                            image_data[y][0][x],
+                            image_data[y][1][x],
+                            image_data[y][2][x],
+                        )
 
                 pixel_data[x, y] = pixel
 

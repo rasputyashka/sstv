@@ -1,0 +1,44 @@
+[project]
+authors = [{ name = "rasput", email = "rasputyashka@gmail.com" }]
+name = "rasput-sstv"
+version = "0.1.0"
+description = "SSTV audio cli file decoder"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.4",
+  "Programming Language :: Python :: 3.5",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  'Operating System :: OS Independent',
+]
+license = { file = "LICENSE" }
+dependencies = [
+    "numpy>=2.0.2",
+    "pillow>=11.2.1",
+    "pysoundfile>=0.9.0.post1",
+    "scipy>=1.13.1",
+]
+
+
+[project.scripts]
+sstv = "sstv.__main__:main"
+
+[project.urls]
+'Homepage' = 'https://github.com/rasputyashka/sstv'
+'Bug Tracker' = 'https://github.com/rasputyashka/sstv/issues'
+'Source' = 'https://github.com/rasputyashka/sstv'
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = ["pre-commit>=4.2.0"]

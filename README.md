@@ -11,11 +11,10 @@ Currently supports the following modes:
 
 Installation
 ------------
-
 ```
 $ git clone https://github.com/colaclanth/sstv.git
-
-$ python setup.py install
+$ python -m venv .venv
+$ 
 ```
 
 Usage

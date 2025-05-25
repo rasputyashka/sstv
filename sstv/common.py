@@ -12,16 +12,16 @@ def log_message(message="", show=True, err=False, recur=False, prefix=True):
     out = stdout
     if err:
         out = stderr
-    end = '\n'
+    end = "\n"
     if recur:
-        end = '\r'
+        end = "\r"
         if platform == "win32":
-            message = ''.join(['\r', message])
+            message = "".join(["\r", message])
         cols = get_terminal_size().columns
         if cols < len(message):
             message = message[:cols]
     if prefix:
-        message = ' '.join(["[sstv]", message])
+        message = " ".join(["[sstv]", message])
 
     print(message, file=out, end=end)
 
@@ -41,8 +41,7 @@ def progress_bar(progress, complete, message="", show=True):
 
     if bar_size > 5:
         fill_size = round(bar_size * level)
-        bar = "[{}]".format(''.join(['#' * fill_size,
-                                     '.' * (bar_size - fill_size)]))
+        bar = "[{}]".format("".join(["#" * fill_size, "." * (bar_size - fill_size)]))
     elif bar_size < -3:
         percent_on = False
 
@@ -52,5 +51,6 @@ def progress_bar(progress, complete, message="", show=True):
 
     align = cols - message_size - len(percent)
     not_end = not progress == complete
-    log_message("{}{:>{width}}{}".format(message, bar, percent, width=align),
-                recur=not_end)
+    log_message(
+        "{}{:>{width}}{}".format(message, bar, percent, width=align), recur=not_end
+    )
