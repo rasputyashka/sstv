@@ -22,7 +22,7 @@ $ ./install.sh
 
 Usage
 -----
-**The installation script tells you what to do, but I am sure you do will not read the instructions...**
+**The installation script tells you what to do, but I am sure you will not read the instructions...**
 
 Usage actually depends on your environment: in case you don't have uv installed, you may run `.venv/bin/sstv` like this:
 ```
